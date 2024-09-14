@@ -1,14 +1,17 @@
-FROM gradle:8.4-jdk21 as build
-
+FROM eclipse-temurin as build
 WORKDIR /app
 
-# Копируем файлы Gradle и исходники
-COPY . .
+COPY *.gradle gradle.* gradlew /app/
+RUN mkdir -p /app/gradle
+COPY gradle/wrapper /app/gradle/wrapper
+COPY ./src /app/src
 
-# Выполняем сборку приложения
+
+# Исправляем окончания строк, если они в формате Windows
+RUN sed -i 's/\r$//' gradlew
 RUN ./gradlew build
+#RUN ls -la
 
-# Упрощаем имя JAR-файла для дальнейшего использования
 RUN mv build/libs/graalvm.jar /app/graalvm.jar
 
 # Указываем образ для запуска
