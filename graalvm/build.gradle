@@ -38,7 +38,9 @@ kotlin {
 		freeCompilerArgs.addAll '-Xjsr305=strict'
 	}
 }
-
+tasks.named("processAot") {
+    applicationMainClass = 'com.example.graalvm.GraalvmApplicationKt'
+}
 tasks.named('test') {
 	useJUnitPlatform()
 }
