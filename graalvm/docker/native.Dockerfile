@@ -6,14 +6,18 @@ COPY *.gradle gradle.* gradlew /app/
 RUN mkdir -p /app/gradle
 COPY gradle/wrapper /app/gradle/wrapper
 COPY ./src /app/src
-
-RUN gu install native-image
 # fix if Windows format
 RUN sed -i 's/\r$//' gradlew
 
-RUN ./gradlew nativeCompile
-RUN ls -la
+RUN gu install native-image
 
-EXPOSE 8081
-CMD ["./build/libs/graalvm"]
+
+RUN ./gradlew nativeCompile
+
+
+RUN chmod +x /app/build/native/nativeCompile
+RUN ls -la /app/build/native/nativeCompile
+
+ENTRYPOINT ["/app/build/native/nativeCompile/graalvm"]
+
 
