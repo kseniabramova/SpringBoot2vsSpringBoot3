@@ -1,5 +1,7 @@
-FROM eclipse-temurin as build
+FROM eclipse-temurin:17-jdk as build
 WORKDIR /app
+RUN java -version
+
 
 COPY *.gradle gradle.* gradlew /app/
 RUN mkdir -p /app/gradle
